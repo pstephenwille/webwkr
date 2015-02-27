@@ -11,21 +11,23 @@
         /* resize Chart */
         function resizeChart() {
             console.log('resize');
-            var docBody = document.getElementsByTagName('body')[0]
-                fontSize = parseInt(document.defaultView.getComputedStyle(docBody, null).fontSize)
-                ,chartW = Math.floor(fontSize * 23, 10) +'px'
-                ,chartH = Math.floor(fontSize * 10, 10) +'px'
+            var docBody = document.getElementsByTagName('body')[0],
+                fontSize = parseInt(document.defaultView.getComputedStyle(docBody, null).fontSize),
+                chartW = Math.floor(fontSize * 23, 10) +'px',
+                chartH = Math.floor(fontSize * 10, 10) +'px';
 
             $('canvas').attr('style', 'width:'+ chartW +'; height:'+ chartH);
-        };
+        }
 
+        
+        
         /* handle img 404s */
         function avatarImg404(img404) {
             if(img404.src.indexOf('faces') > -1){
                 $(img404).hide();
                 $(img404).prev().addClass('avatarBG1');
                 $(img404).prev().show();
-            };
+            }
         }
 
 
@@ -35,7 +37,7 @@
 <h1 id="intro">Wait ~20 sec for the 10MB logs.json file to load</h1>
 <div id="pageWrap" class="pageWrap">
     <h1>My app</h1>
-    <span ng-repeat-start="user in users track by $index">
+    <div ng-repeat-start="user in users track by $index">
         <div class="cardWrap">
             <p class="{{user.avatar|avatarShowHide:p='p'}}"><span class="avatarLetter">{{user.name|firstInitial}}</span></p>
             <img src={{user.avatar}} class="{{user.avatar|avatarShowHide:img='img'}}"
@@ -54,7 +56,7 @@
                 </canvas>
 
         </div>
-    </span>
+    </div>
     <p ng-repeat-end></p>
 
     <br style="clear:both;">
