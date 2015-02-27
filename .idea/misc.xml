@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EncodingComponent">
+    <option name="projectEncoding" />
+  </component>
+  <component name="IdProvider" IDEtalkID="F3100F052F75DE5F3B5F1D0EECD572C1" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
+

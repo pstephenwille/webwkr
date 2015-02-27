@@ -1,0 +1,131 @@
+/**
+ *
+ * Created by stephen
+ * Date: 4/24/2014
+ */
+
+
+"use strict";
+
+var users = 0, logs = 0, usersReq, logsReq;
+
+logsReq = new XMLHttpRequest();
+logsReq.open('GET', 'logs.json', true);
+logsReq.setRequestHeader('Content-Type', 'application/json');
+logsReq.onreadystatechange = function ()
+{
+    if (logsReq.readyState == 4)
+    {
+        if (logsReq.status == 200)
+        {
+            logs = JSON.parse(logsReq.responseText);
+            mergeDataSets();
+        }
+    }
+};
+logsReq.send();
+
+
+usersReq = new XMLHttpRequest();
+usersReq.open('GET', 'users.json', true);
+usersReq.setRequestHeader('Content-Type', 'application/json');
+usersReq.onreadystatechange = function ()
+{
+    if (usersReq.readyState == 4)
+    {
+        if (usersReq.status == 200)
+        {
+            users = JSON.parse(usersReq.responseText);
+            mergeDataSets();
+        }
+    }
+};
+usersReq.send();
+
+
+function mergeDataSets()
+{
+    var log, usr, u_idx, impression_idx = 0;
+
+    if (users !== 0 && logs !== 0)
+    {
+        /* through logs array */
+        for (log = 0; log < logs.length; log++)
+        {
+            /* through users array */
+            for (usr = 0; usr < users.length; usr++)
+            {
+                /* if IDs match */
+                if (logs[log].user_id == users[usr].id)
+                {
+                    /* separate the log types, and sum up revenue */
+                    (users[usr].conversions === undefined)? users[usr].conversions = []
+                        :(logs[log].type == 'conversion')? users[usr].conversions.push(logs[log]): null;
+
+                    (users[usr].impressions === undefined)? users[usr].impressions = 0
+                        :(logs[log].type == 'impression')? users[usr].impressions += 1: null;
+
+                    (users[usr].revenue === undefined)? users[usr].revenue = 0
+                        :(logs[log].revenue !== 0)? users[usr].revenue += logs[log].revenue: null;
+
+
+//                    if(logs[log].type == 'conversion')
+//                        { users[usr].conversions.push(logs[log]); }
+//                    if(logs[log].type == 'impression')
+//                        { users[usr].impressions += 1; }
+//                    if(logs[log].revenue !== 0)
+//                        { users[usr].revenue += logs[log].revenue; }
+
+                }
+            }
+        }
+
+        /* data has been merged, sort it and send to the page, one at a time. */
+        for (var u = 0; u < users.length; u++){
+            users[u].conversions = mergeSort(users[u].conversions);
+            users[u].revenue = parseInt(users[u].revenue, 10);
+            self.postMessage(users[u]);
+        }
+    }
+}
+
+
+
+//var a = [34, 203, 3, 746, 200, 984, 198, 764, 9];
+
+function mergeSort(userLogs)
+{/* split array if not already sorted, and call merge() */
+    if (userLogs.length < 2)
+        return userLogs;
+
+    var middle = parseInt(userLogs.length / 2);
+    var left   = userLogs.slice(0, middle);
+    var right  = userLogs.slice(middle, userLogs.length);
+
+    return merge(mergeSort(left), mergeSort(right));
+}
+function merge(left, right)
+{
+    var result = [], lTime, rTime;
+    while (left.length && right.length) {
+        lTime = new Date(left[0].time.replace(/-/g, ',')).getTime();
+        rTime = new Date(right[0].time.replace(/-/g, ',')).getTime();
+
+        if (lTime <= rTime) {
+            result.push(left.shift());
+        } else {
+            result.push(right.shift());
+        }
+    }
+
+    while (left.length)
+        result.push(left.shift());
+
+    while (right.length)
+        result.push(right.shift());
+
+    return result;
+//    return true;
+}
+
+/* todo sort by last name */

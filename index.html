@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width; maximum-scale=1; minimum-scale=1;" />
+    <title>Hassoffers</title>
+    <link href="css/reset.css" rel="stylesheet"/>
+    <link href="css/app.css" rel="stylesheet"/>
+    <script data-main="js/main" src="js/require.js"></script>
+    <script>
+        /* resize Chart */
+        function resizeChart() {
+            console.log('resize');
+            var docBody = document.getElementsByTagName('body')[0]
+                fontSize = parseInt(document.defaultView.getComputedStyle(docBody, null).fontSize)
+                ,chartW = Math.floor(fontSize * 23, 10) +'px'
+                ,chartH = Math.floor(fontSize * 10, 10) +'px'
+
+            $('canvas').attr('style', 'width:'+ chartW +'; height:'+ chartH);
+        };
+
+        /* handle img 404s */
+        function avatarImg404(img404) {
+            if(img404.src.indexOf('faces') > -1){
+                $(img404).hide();
+                $(img404).prev().addClass('avatarBG1');
+                $(img404).prev().show();
+            };
+        }
+
+
+    </script>
+</head>
+<body>
+<h1 id="intro">Wait ~20 sec for the 10MB logs.json file to load</h1>
+<div id="pageWrap" class="pageWrap">
+    <h1>My app</h1>
+    <span ng-repeat-start="user in users track by $index">
+        <div class="cardWrap">
+            <p class="{{user.avatar|avatarShowHide:p='p'}}"><span class="avatarLetter">{{user.name|firstInitial}}</span></p>
+            <img src={{user.avatar}} class="{{user.avatar|avatarShowHide:img='img'}}"
+                 onerror="avatarImg404(this)" />
+
+            <div class="avatarName">{{user.name}}<br><span>{{user.occupation}}</span></div>
+
+            <ul class="cardDetails">
+                <li class="impressions metricsText">{{user.impressions}}<br/><span>impressions</span></li>
+                <li class="conversions metricsText">{{user.conversions.length}}<br/><span>conversions</span></li>
+                <li class="revenue metricsText">{{user.revenue|currency}}</li>
+            </ul>
+                <canvas ng-controller="ChartCtrl" id={{user.id}} class="chart"
+                        width="230"
+                        height="100">
+                </canvas>
+
+        </div>
+    </span>
+    <p ng-repeat-end></p>
+
+    <br style="clear:both;">
+</div>
+</body>
+
+</html>
+
