@@ -4,7 +4,7 @@
     <option name="projectEncoding" />
   </component>
   <component name="IdProvider" IDEtalkID="F3100F052F75DE5F3B5F1D0EECD572C1" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
