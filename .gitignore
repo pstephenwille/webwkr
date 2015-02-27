@@ -1,5 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
-
-*.iml
+# Intellij
 .idea/
-.idea/workspace.xml
+*.iml
+*.iws
