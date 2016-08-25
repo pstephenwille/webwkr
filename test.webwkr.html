@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebWkr</title>
+    <!--<script src="webwkr.js"></script>-->
+</head>
+<body>
+<script type="text/javascript">
+    wkr = new Worker('webwkr.js');
+    wkr.onmessage = function(e){
+        console.log('.........worker ', e.data);
+    }
+</script>
+</body>
+</html>
